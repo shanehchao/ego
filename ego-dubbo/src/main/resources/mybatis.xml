@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<!-- 指定实体类别名 -->
+	<typeAliases>
+		<package name="com.ego.pojo"/>
+	</typeAliases>
+	<!-- 配置 mybatis pagehelper分页插件-->
+	<plugins>
+		<plugin interceptor="com.github.pagehelper.PageHelper">
+			<property name="dialect" value="mysql"/>
+		</plugin>
+	</plugins>
+	<!-- 注册映射文件 -->
+	<mappers>
+		<package name="com.ego.mapper"/>
+	</mappers>
+</configuration>
