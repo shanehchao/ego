@@ -7,7 +7,6 @@ import com.ego.pojo.TbItemParamExample;
 import com.ego.service.TbItemParamDubboService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.apache.zookeeper.data.Id;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -25,7 +24,7 @@ public class TbItemParamDubboServiceImpl implements TbItemParamDubboService {
         //查询所有数据
         List<TbItemParam> tbItemParams = tbItemParamMapper.selectByExampleWithBLOBs(example);
         //将查询数据封装到pageinfo中
-        PageInfo<TbItemParam> pageInfo = new PageInfo<>(tbItemParams);
+        PageInfo<TbItemParam> pageInfo = new PageInfo<TbItemParam>(tbItemParams);
         //返回需要的数据
         EasyUiDataGrid easyUiDataGrid = new EasyUiDataGrid();
         easyUiDataGrid.setTotal(pageInfo.getTotal());

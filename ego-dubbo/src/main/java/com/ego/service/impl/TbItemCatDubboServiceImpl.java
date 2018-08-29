@@ -27,4 +27,11 @@ public class TbItemCatDubboServiceImpl implements TbItemCatDubboService {
     public TbItemCat selectTbItemCatById(long id) {
         return tbItemCatMapper.selectByPrimaryKey(id);
     }
+
+    //查询所有商品类目
+    @Override
+    public List<TbItemCat> selectAllCat() {
+        TbItemCatExample example = new TbItemCatExample();
+        return tbItemCatMapper.selectByExample(example);
+    }
 }

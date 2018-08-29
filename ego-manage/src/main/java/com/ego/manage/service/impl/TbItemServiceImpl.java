@@ -7,8 +7,10 @@ import com.ego.commons.utils.IDUtils;
 import com.ego.manage.service.TbItemService;
 import com.ego.pojo.TbItem;
 import com.ego.pojo.TbItemDesc;
+import com.ego.pojo.TbItemParamItem;
 import com.ego.service.TbItemDescDubboService;
 import com.ego.service.TbItemDubboService;
+import com.ego.service.TbItemParamItemDubboService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,6 +26,8 @@ public class TbItemServiceImpl implements TbItemService {
     private TbItemDubboService tbItemDubboService;
     @Reference
     private TbItemDescDubboService tbItemDescDubboService;
+    @Reference
+    private TbItemParamItemDubboService tbItemParamItemDubboService;
 
     @Value("${vsftpd.host}")
     String host;
@@ -83,9 +87,10 @@ public class TbItemServiceImpl implements TbItemService {
         return map;
     }
 
-    //新增商品
+    // 新增商品
     @Override
-    public int insertTbItem(TbItem tbItem, String itemDesc) {
+    public int insertTbItem(TbItem tbItem, String itemDesc, String itemParams) {
+        // 新增商品
         Date date = new Date();
         long id = IDUtils.genItemId();
         tbItem.setId(id);
@@ -93,13 +98,24 @@ public class TbItemServiceImpl implements TbItemService {
         tbItem.setCreated(date);
         tbItem.setUpdated(date);
         int index = tbItemDubboService.insertTbItem(tbItem);
+
+        // 新增商品描述
         TbItemDesc tbitemdesc = new TbItemDesc();
         tbitemdesc.setItemId(id);
         tbitemdesc.setItemDesc(itemDesc);
         tbitemdesc.setCreated(date);
         tbitemdesc.setUpdated(date);
         index += tbItemDescDubboService.insertTbItemDesc(tbitemdesc);
-        if(index == 2) {
+
+        // 新增规格参数商品内容
+        TbItemParamItem tbItemParamItem = new TbItemParamItem();
+        tbItemParamItem.setItemId(id);
+        tbItemParamItem.setParamData(itemParams);
+        tbItemParamItem.setCreated(date);
+        tbItemParamItem.setUpdated(date);
+        index += tbItemParamItemDubboService.insertTbItemParamItem(tbItemParamItem);
+
+        if(index == 3) {
             return 1;
         }
         return 0;

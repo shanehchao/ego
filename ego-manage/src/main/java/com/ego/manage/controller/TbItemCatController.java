@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import java.util.List;
 
+/**
+ * 商品类目
+ */
 @Controller
 public class TbItemCatController {
     @Resource

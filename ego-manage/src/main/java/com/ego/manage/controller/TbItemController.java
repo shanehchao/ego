@@ -14,6 +14,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 商品
+ */
 @Controller
 public class TbItemController {
 
@@ -106,9 +109,9 @@ public class TbItemController {
     //新增商品
     @RequestMapping("/item/save")
     @ResponseBody
-    public EgoResult insertItem(TbItem tbItem, String desc) {
+    public EgoResult insertItem(TbItem tbItem, String desc, String itemParams) {
         EgoResult egoResult = new EgoResult();
-        int index = tbItemServiceImpl.insertTbItem(tbItem, desc);
+        int index = tbItemServiceImpl.insertTbItem(tbItem, desc, itemParams);
         if (index == 1) {
             egoResult.setStatus(200);
         } else {

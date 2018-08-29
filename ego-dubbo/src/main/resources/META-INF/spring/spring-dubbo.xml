@@ -2,11 +2,10 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://code.alibabatech.com/schema/dubbo 
-        http://code.alibabatech.com/schema/dubbo/dubbo.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+        http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 
     <!-- 配置应用名称 -->
     <dubbo:application name="ego-service-dubbo"/>
@@ -19,18 +18,26 @@
     <dubbo:service interface="com.ego.service.TbItemDubboService" ref="tbItemDubboServiceImpl"/>
     <!--装配商品服务-->
     <bean id="tbItemDubboServiceImpl" class="com.ego.service.impl.TbItemDubboServiceImpl"/>
+
     <!--暴露商品分类服务接口-->
     <dubbo:service interface="com.ego.service.TbItemCatDubboService" ref="tbItemCatDubboServiceImpl"/>
     <!--装配商品分类服务-->
     <bean id="tbItemCatDubboServiceImpl" class="com.ego.service.impl.TbItemCatDubboServiceImpl"/>
+
     <!--暴露商品描述服务接口-->
     <dubbo:service interface="com.ego.service.TbItemDescDubboService" ref="tbItemDescDubboServiceImpl"/>
     <!--装配商品描述服务-->
     <bean id="tbItemDescDubboServiceImpl" class="com.ego.service.impl.TbItemDescDubboServiceImpl"/>
+
     <!--暴露商品参数服务接口-->
     <dubbo:service interface="com.ego.service.TbItemParamDubboService" ref="tbItemParamDubboServiceImpl"/>
     <!--装配商品参数服务-->
     <bean id="tbItemParamDubboServiceImpl" class="com.ego.service.impl.TbItemParamDubboServiceImpl"/>
+
+    <!--暴露商品参数服务接口-->
+    <dubbo:service interface="com.ego.service.TbItemParamItemDubboService" ref="tbItemParamItemDubboServiceImpl"/>
+    <!--装配商品参数服务-->
+    <bean id="tbItemParamItemDubboServiceImpl" class="com.ego.service.impl.TbItemParamItemDubboServiceImpl"/>
 
     <!-- 注解开发，与Spring整合需要修改dubbo源码（不建议）或打入自己jar中 或springboot外挂方式-->
     <!-- 扫描dubbo注解 -->

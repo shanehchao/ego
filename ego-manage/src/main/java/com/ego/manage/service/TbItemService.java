@@ -18,5 +18,5 @@ public interface TbItemService {
     Map<String, Object> upload(MultipartFile uploadFile) throws IOException;
 
     //新增商品
-    int insertTbItem(TbItem tbItem, String itemDesc);
+    int insertTbItem(TbItem tbItem, String itemDesc, String itemParams);
 }
