@@ -39,6 +39,11 @@
     <!--装配商品参数服务-->
     <bean id="tbItemParamItemDubboServiceImpl" class="com.ego.service.impl.TbItemParamItemDubboServiceImpl"/>
 
+    <!--暴露商品参数服务接口-->
+    <dubbo:service interface="com.ego.service.TbContentCategoryDubboService" ref="tbContentCategoryDubboServiceImpl"/>
+    <!--装配商品参数服务-->
+    <bean id="tbContentCategoryDubboServiceImpl" class="com.ego.service.impl.TbContentCategoryDubboServiceImpl"/>
+
     <!-- 注解开发，与Spring整合需要修改dubbo源码（不建议）或打入自己jar中 或springboot外挂方式-->
     <!-- 扫描dubbo注解 -->
     <!--<dubbo:annotation package="com.ego.service.impl" />-->

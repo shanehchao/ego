@@ -23,6 +23,9 @@ $(function(){
                 top: e.pageY
             });
         },
+        onBeforeEdit: function(node) {
+            oldName = node.text;
+        },
         onAfterEdit : function(node){
         	var _tree = $(this);
         	if(node.id == 0){
@@ -35,11 +38,22 @@ $(function(){
             			});
         				$.messager.alert('提示','创建'+node.text+' 分类成功!');
         			}else{
+                        _tree.tree("remove",node.target);
         				$.messager.alert('提示','创建'+node.text+' 分类失败!');
         			}
         		});
         	}else{
-        		$.post("/content/category/update",{id:node.id,name:node.text});
+        		$.post("/content/category/update",{id:node.id,name:node.text},function(data) {
+                    if (data.status == 200) {
+                        $.messager.alert('提示', '修改' + node.text + ' 分类成功!');
+                    } else {
+                        $.messager.alert('提示', '修改' + node.text + ' 分类失败!');
+                        _tree.tree("update",{
+                            target : node.target,
+                            text : oldName
+                        });
+                    }
+                });
         	}
         }
 	});
