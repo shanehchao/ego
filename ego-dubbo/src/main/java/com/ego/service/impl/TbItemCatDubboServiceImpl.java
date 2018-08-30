@@ -4,6 +4,7 @@ import com.ego.mapper.TbItemCatMapper;
 import com.ego.pojo.TbItemCat;
 import com.ego.pojo.TbItemCatExample;
 import com.ego.service.TbItemCatDubboService;
+import com.ego.utils.MyDubboUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -11,6 +12,9 @@ import java.util.List;
 public class TbItemCatDubboServiceImpl implements TbItemCatDubboService {
     @Resource
     private TbItemCatMapper tbItemCatMapper;
+    @Resource
+    private MyDubboUtils myDubboUtils;
+
     //根据父类目id查询所有子类目
     @Override
     public List<TbItemCat> selectTbItemCatByPid(long pid) {
@@ -31,7 +35,6 @@ public class TbItemCatDubboServiceImpl implements TbItemCatDubboService {
     //查询所有商品类目
     @Override
     public List<TbItemCat> selectAllCat() {
-        TbItemCatExample example = new TbItemCatExample();
-        return tbItemCatMapper.selectByExample(example);
+        return myDubboUtils.selectAllCat(0);
     }
 }

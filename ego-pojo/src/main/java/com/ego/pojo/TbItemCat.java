@@ -2,6 +2,7 @@ package com.ego.pojo;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class TbItemCat implements Serializable {
     private Long id;
@@ -19,6 +20,9 @@ public class TbItemCat implements Serializable {
     private Date created;
 
     private Date updated;
+
+    private List<TbItemCat> tbItemCatChilren;
+
 
     public Long getId() {
         return id;
@@ -82,5 +86,13 @@ public class TbItemCat implements Serializable {
 
     public void setUpdated(Date updated) {
         this.updated = updated;
+    }
+
+    public List<TbItemCat> getTbItemCatChilren() {
+        return tbItemCatChilren;
+    }
+
+    public void setTbItemCatChilren(List<TbItemCat> tbItemCatChilren) {
+        this.tbItemCatChilren = tbItemCatChilren;
     }
 }
