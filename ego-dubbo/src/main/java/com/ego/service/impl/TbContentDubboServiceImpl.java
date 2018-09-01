@@ -8,6 +8,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -44,4 +45,28 @@ public class TbContentDubboServiceImpl implements TbContentDubboService {
         }
         return tbContentMapper.countByExample(example);
     }
+
+    // 新增内容管理
+    @Override
+    public int insertTbContent(TbContent tbContent) {
+        Date date = new Date();
+        tbContent.setCreated(date);
+        tbContent.setUpdated(date);
+        return tbContentMapper.insertSelective(tbContent);
+    }
+
+    // 修改内容管理
+    @Override
+    public int updateTbContent(TbContent tbContent) {
+        Date date = new Date();
+        tbContent.setUpdated(date);
+        return tbContentMapper.updateByPrimaryKeySelective(tbContent);
+    }
+
+    // 删除内容管理
+    @Override
+    public int deleteTbContent(long id) {
+        return tbContentMapper.deleteByPrimaryKey(id);
+    }
+
 }

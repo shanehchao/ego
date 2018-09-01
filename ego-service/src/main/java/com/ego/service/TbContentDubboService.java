@@ -15,4 +15,13 @@ public interface TbContentDubboService {
 
     // 根据分类id查询所有该分类的记录数
     long selectCountTotal(long categoryId);
+
+    // 新增内容管理
+    int insertTbContent(TbContent tbContent);
+
+    // 修改内容管理
+    int updateTbContent(TbContent tbContent);
+
+    // 删除内容管理
+    int deleteTbContent(long id);
 }

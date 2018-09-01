@@ -2,7 +2,9 @@ package com.ego.manage.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.ego.commons.pojo.EasyUiDataGrid;
+import com.ego.commons.pojo.EgoResult;
 import com.ego.manage.service.TbContentService;
+import com.ego.pojo.TbContent;
 import com.ego.service.TbContentDubboService;
 import org.springframework.stereotype.Service;
 
@@ -23,5 +25,42 @@ public class TbContentServiceImpl implements TbContentService {
         easyUiDataGrid.setTotal(tbContentDubboService.selectCountTotal(categoryId));
         easyUiDataGrid.setRows(tbContentDubboService.selectByCategoryId(categoryId, page, rows));
         return easyUiDataGrid;
+    }
+
+    // 新增内容管理
+    @Override
+    public EgoResult insertTbContent(TbContent tbContent) {
+        EgoResult er = new EgoResult();
+        int index = tbContentDubboService.insertTbContent(tbContent);
+        if (index>0) {
+            er.setStatus(200);
+        }
+        return er;
+    }
+
+    // 修改内容管理
+    @Override
+    public EgoResult updateTbContent(TbContent tbContent) {
+        EgoResult er = new EgoResult();
+        int index = tbContentDubboService.updateTbContent(tbContent);
+        if (index>0) {
+            er.setStatus(200);
+        }
+        return er;
+    }
+
+    // 删除内容管理
+    @Override
+    public EgoResult deleteTbContent(String ids) {
+        String[] idsArr = ids.split(",");
+        int index = 0;
+        for (String id : idsArr) {
+            index += tbContentDubboService.deleteTbContent(Long.parseLong(id));
+        }
+        EgoResult er = new EgoResult();
+        if (index==idsArr.length) {
+            er.setStatus(200);
+        }
+        return er;
     }
 }
