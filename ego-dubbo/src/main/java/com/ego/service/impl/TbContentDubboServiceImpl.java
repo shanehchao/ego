@@ -69,4 +69,14 @@ public class TbContentDubboServiceImpl implements TbContentDubboService {
         return tbContentMapper.deleteByPrimaryKey(id);
     }
 
+    // 查询当前类目下的所有内容
+    @Override
+    public List<TbContent> selectByCategoryId(long categoryId) {
+        TbContentExample example = new TbContentExample();
+        if (categoryId!=0) {
+            example.createCriteria().andCategoryIdEqualTo(categoryId);
+        }
+        return tbContentMapper.selectByExampleWithBLOBs(example);
+    }
+
 }

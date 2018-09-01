@@ -24,4 +24,7 @@ public interface TbContentDubboService {
 
     // 删除内容管理
     int deleteTbContent(long id);
+
+    // 查询当前类目下的所有内容
+    List<TbContent> selectByCategoryId(long categoryId);
 }
