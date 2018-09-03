@@ -20,9 +20,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import java.beans.IntrospectionException;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -77,58 +75,64 @@ public class TbItemServiceImpl implements TbItemService {
      * @return
      */
     @Override
-    public int updateTbItemStatusById(String ids, byte status) throws IllegalAccessException, IntrospectionException, InvocationTargetException {
+    public int updateTbItemStatusById(String ids, final byte status) {
         String[] idsStr = ids.split(",");
         int result = 0;
-        for (String id : idsStr) {
+        for (final String id : idsStr) {
             int index = tbItemDubboService.updateTbItemStatusById(Long.parseLong(id), status);
             if (index > 0) {
-                String itemKeyTemp = itemKey+id;
-                // 删除和下架，删除solr中的数据
-                if (status==2 || status==3) {
-                    Map<String, String> param = new HashMap<>();
-                    param.put("id", id);
-                    String jsonStr = HttpClientUtil.doPost(searchUrl + "/solr/delete", param);
-                    EgoResult er = JsonUtils.jsonToPojo(jsonStr, EgoResult.class);
-                    if (er.getStatus() != 200) {
-                        // 清空solr数据
-                        HttpClientUtil.doPost(searchUrl+"/solr/deleteall");
-                    }
-                    // 同步Redis数据
-                    jedisDao.del(itemKeyTemp);
-                }
-                // 上架，同步solr中数据
-                if (status == 1) {
-                    Map<String, String> param = new HashMap<>();
-                    param.put("id", id);
-                    long idNum = Long.parseLong(id);
-                    // 根据id查询商品信息
-                    TbItem tbItem = tbItemDubboService.selectTbItemById(idNum);
-                    param.put("item_title", tbItem.getTitle());
-                    param.put("item_sell_point", tbItem.getSellPoint());
-                    param.put("item_price", tbItem.getPrice()+"");
-                    param.put("item_image", tbItem.getImage());
+                // 开启另一线程同步solr和Redis数据，提升效率
+                new Thread(){
+                    @Override
+                    public void run() {
+                        String itemKeyTemp = itemKey+id;
+                        // 删除和下架，删除solr中的数据
+                        if (status==2 || status==3) {
+                            Map<String, String> param = new HashMap<>();
+                            param.put("id", id);
+                            String jsonStr = HttpClientUtil.doPost(searchUrl + "/solr/delete", param);
+                            EgoResult er = JsonUtils.jsonToPojo(jsonStr, EgoResult.class);
+                            if (er.getStatus() != 200) {
+                                // 清空solr数据
+                                HttpClientUtil.doPost(searchUrl+"/solr/deleteall");
+                            }
+                            // 同步Redis数据
+                            jedisDao.del(itemKeyTemp);
+                        }
+                        // 上架，同步solr中数据
+                        if (status == 1) {
+                            Map<String, String> param = new HashMap<>();
+                            param.put("id", id);
+                            long idNum = Long.parseLong(id);
+                            // 根据id查询商品信息
+                            TbItem tbItem = tbItemDubboService.selectTbItemById(idNum);
+                            param.put("item_title", tbItem.getTitle());
+                            param.put("item_sell_point", tbItem.getSellPoint());
+                            param.put("item_price", tbItem.getPrice()+"");
+                            param.put("item_image", tbItem.getImage());
 
-                    TbItemCat tbItemCat = tbItemCatDubboService.selectTbItemCatById(tbItem.getCid());
-                    if (tbItemCat != null) {
-                        param.put("item_category_name", tbItemCat.getName());
+                            TbItemCat tbItemCat = tbItemCatDubboService.selectTbItemCatById(tbItem.getCid());
+                            if (tbItemCat != null) {
+                                param.put("item_category_name", tbItemCat.getName());
+                            }
+                            TbItemDesc tbItemDesc = tbItemDescDubboService.selectByTbItemId(idNum);
+                            if (tbItemDesc != null) {
+                                param.put("item_desc", tbItemDesc.getItemDesc());
+                            }
+                            String jsonStr = HttpClientUtil.doPost(searchUrl + "/solr/insert", param);
+                            EgoResult er = JsonUtils.jsonToPojo(jsonStr, EgoResult.class);
+                            if (er.getStatus() != 200) {
+                                // 清空solr数据
+                                HttpClientUtil.doPost(searchUrl+"/solr/deleteall");
+                            }
+                            // 同步Redis数据
+                            Map<String, Object> map = BeanUtils.bean2Map(tbItem);
+                            String image = tbItem.getImage();
+                            map.put("images", StringUtils.isEmpty(image)?new String[1]:image.split(","));
+                            jedisDao.set(itemKeyTemp, JsonUtils.objectToJson(map));
+                        }
                     }
-                    TbItemDesc tbItemDesc = tbItemDescDubboService.selectByTbItemId(idNum);
-                    if (tbItemDesc != null) {
-                        param.put("item_desc", tbItemDesc.getItemDesc());
-                    }
-                    String jsonStr = HttpClientUtil.doPost(searchUrl + "/solr/insert", param);
-                    EgoResult er = JsonUtils.jsonToPojo(jsonStr, EgoResult.class);
-                    if (er.getStatus() != 200) {
-                        // 清空solr数据
-                        HttpClientUtil.doPost(searchUrl+"/solr/deleteall");
-                    }
-                    // 同步Redis数据
-                    Map<String, Object> map = BeanUtils.bean2Map(tbItem);
-                    String image = tbItem.getImage();
-                    map.put("images", StringUtils.isEmpty(image)?new String[1]:image.split(","));
-                    jedisDao.set(itemKeyTemp, JsonUtils.objectToJson(map));
-                }
+                }.start();
                 result += index;
             }
         }

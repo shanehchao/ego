@@ -17,26 +17,32 @@ public class BeanUtils {
 
     /**
      * Bean --> Map 利用Introspector和PropertyDescriptor
-     *
      * @param obj
      */
-    public static Map<String, Object> bean2Map(Object obj) throws IntrospectionException, InvocationTargetException, IllegalAccessException {
-
+    public static Map<String, Object> bean2Map(Object obj) {
         if (obj == null) {
             return null;
         }
         Map<String, Object> map = new HashMap<>();
-        BeanInfo beanInfo = Introspector.getBeanInfo(obj.getClass());
-        PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
-        for (PropertyDescriptor property : propertyDescriptors) {
-            String key = property.getName();
-            // 过滤class属性
-            if (!key.equals("class")) {
-                // 得到property对应的getter方法
-                Method getter = property.getReadMethod();
-                Object value = getter.invoke(obj);
-                map.put(key, value);
+        try {
+            BeanInfo beanInfo = Introspector.getBeanInfo(obj.getClass());
+            PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
+            for (PropertyDescriptor property : propertyDescriptors) {
+                String key = property.getName();
+                // 过滤class属性
+                if (!key.equals("class")) {
+                    // 得到property对应的getter方法
+                    Method getter = property.getReadMethod();
+                    Object value = getter.invoke(obj);
+                    map.put(key, value);
+                }
             }
+        } catch (IntrospectionException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
         }
         return map;
     }
