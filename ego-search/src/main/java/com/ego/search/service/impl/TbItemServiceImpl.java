@@ -1,7 +1,10 @@
 package com.ego.search.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.ego.commons.pojo.EgoResult;
 import com.ego.pojo.TbItem;
+import com.ego.pojo.TbItemCat;
+import com.ego.pojo.TbItemDesc;
 import com.ego.search.dao.SolrDao;
 import com.ego.search.pojo.SolrItem;
 import com.ego.search.service.TbItemService;
@@ -60,8 +63,16 @@ public class TbItemServiceImpl implements TbItemService {
             doc.setField("item_sell_point", tbItem.getSellPoint());
             doc.setField("item_price", tbItem.getPrice());
             doc.setField("item_image", tbItem.getImage());
-            doc.setField("item_category_name", tbItemCatDubboService.selectTbItemCatById(tbItem.getCid()).getName());
-            doc.setField("item_desc", tbItemDescDubboService.selectByTbItemId(id));
+
+            TbItemCat tbItemCat = tbItemCatDubboService.selectTbItemCatById(tbItem.getCid());
+            if (tbItemCat != null) {
+                doc.setField("item_category_name", tbItemCat.getName());
+            }
+            TbItemDesc tbItemDesc = tbItemDescDubboService.selectByTbItemId(id);
+            if (tbItemDesc != null) {
+                doc.setField("item_desc", tbItemDesc.getItemDesc());
+            }
+
             solrDao.insert(doc);
         }
     }
@@ -120,8 +131,50 @@ public class TbItemServiceImpl implements TbItemService {
             solrItemList.add(solrItem);
         }
         result.put("itemList", solrItemList);
+        // 获取总记录数
         long count = response.getNumFound();
         result.put("totalPages", count%rows==0 ? count/rows : count/rows+1);
         return result;
+    }
+
+    // 根据id删除solr中数据
+    @Override
+    public EgoResult deleteById(String id) {
+        EgoResult er = new EgoResult();
+        int index = solrDao.deleteById(id);
+        if (index == 0) {
+            er.setStatus(200);
+        }
+        return er;
+    }
+
+    // 删除solr中所有数据
+    @Override
+    public EgoResult deleteAll() {
+        EgoResult er = new EgoResult();
+        int index = solrDao.deleteAll();
+        if (index == 0) {
+            er.setStatus(200);
+        }
+        return er;
+    }
+
+    // 新增solr数据
+    @Override
+    public EgoResult insert(Map<String, String> param) {
+        EgoResult er = new EgoResult();
+        SolrInputDocument doc = new SolrInputDocument();
+        doc.setField("id", param.get("id"));
+        doc.setField("item_title", param.get("item_title"));
+        doc.setField("item_sell_point", param.get("item_sell_point"));
+        doc.setField("item_price", param.get("item_price"));
+        doc.setField("item_image", param.get("item_image"));
+        doc.setField("item_category_name", param.get("item_category_name"));
+        doc.setField("item_desc", param.get("item_desc"));
+        int index = solrDao.insert(doc);
+        if (index == 0) {
+            er.setStatus(200);
+        }
+        return er;
     }
 }

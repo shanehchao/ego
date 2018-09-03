@@ -59,6 +59,14 @@ public class TbItemDubboServiceImpl implements TbItemDubboService {
     // 查询所有商品
     @Override
     public List<TbItem> selectAll() {
-        return tbItemMapper.selectByExample(new TbItemExample());
+        TbItemExample example = new TbItemExample();
+        example.createCriteria().andStatusEqualTo((byte) 1);
+        return tbItemMapper.selectByExample(example);
+    }
+
+    // 根据id查询商品信息
+    @Override
+    public TbItem selectTbItemById(long id) {
+        return tbItemMapper.selectByPrimaryKey(id);
     }
 }

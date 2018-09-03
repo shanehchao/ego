@@ -17,9 +17,9 @@ public interface SolrDao {
     // 删除solr中所有数据
     int deleteAll();
 
-    // 新增
+    // 新增solr数据
     int insert(SolrInputDocument doc);
 
-    // 查询
+    // 查询solr数据
     QueryResponse query(SolrParams params) throws SolrServerException;
 }

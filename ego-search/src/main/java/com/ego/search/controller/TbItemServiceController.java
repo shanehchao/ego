@@ -1,5 +1,6 @@
 package com.ego.search.controller;
 
+import com.ego.commons.pojo.EgoResult;
 import com.ego.search.service.TbItemService;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.springframework.stereotype.Controller;
@@ -46,6 +47,27 @@ public class TbItemServiceController {
             e.printStackTrace();
         }
         return "/WEB-INF/jsp/search.jsp";
+    }
+
+    // 根据id删除solr中数据
+    @RequestMapping("/solr/delete")
+    @ResponseBody
+    public EgoResult deleteById(@RequestParam Map<String, String> param) {
+        return tbItemService.deleteById(param.get("id"));
+    }
+
+    // 删除solr中所有数据
+    @RequestMapping("/solr/deleteall")
+    @ResponseBody
+    public EgoResult deleteAll() {
+        return tbItemService.deleteAll();
+    }
+
+    // 新增solr数据
+    @RequestMapping("/solr/insert")
+    @ResponseBody
+    public EgoResult insert(@RequestParam Map<String, String> param) {
+        return tbItemService.insert(param);
     }
 
 }

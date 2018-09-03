@@ -54,7 +54,7 @@ public class SolrDaoImpl implements SolrDao {
         return status;
     }
 
-    // 新增
+    // 新增solr数据
     @Override
     public int insert(SolrInputDocument doc) {
         int status = -1;
@@ -70,7 +70,7 @@ public class SolrDaoImpl implements SolrDao {
         return status;
     }
 
-    // 查询
+    // 查询solr数据
     public QueryResponse query(SolrParams params) throws SolrServerException {
         return cloudSolrServer.query(params);
     }

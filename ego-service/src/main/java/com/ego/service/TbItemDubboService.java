@@ -17,4 +17,7 @@ public interface TbItemDubboService {
 
     // 查询所有商品
     List<TbItem> selectAll();
+
+    // 根据id查询商品信息
+    TbItem selectTbItemById(long id);
 }
