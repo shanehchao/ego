@@ -43,7 +43,7 @@
         <pagehelper-version>4.1.6</pagehelper-version>
         <c3p0-version>0.9.5.2</c3p0-version>
         <junit-version>4.12</junit-version>
-        <solrj-version>4.10.1</solrj-version>
+        <solrj-version>4.10.4</solrj-version>
         <httpclient-version>4.5</httpclient-version>
     </properties>
     <!-- 该标签表明之声明相应的依赖，并不进行引入 -->

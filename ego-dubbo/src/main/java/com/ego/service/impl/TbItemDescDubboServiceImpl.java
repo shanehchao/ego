@@ -15,4 +15,10 @@ public class TbItemDescDubboServiceImpl implements TbItemDescDubboService {
     public int insertTbItemDesc(TbItemDesc tbItemDesc) {
         return tbItemDescMapper.insertSelective(tbItemDesc);
     }
+
+    // 根据商品id查询商品描述
+    @Override
+    public TbItemDesc selectByTbItemId(long tbItemId) {
+        return tbItemDescMapper.selectByPrimaryKey(tbItemId);
+    }
 }

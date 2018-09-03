@@ -3,12 +3,12 @@ package com.ego.portal.service.impl;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.ego.commons.utils.JsonUtils;
 import com.ego.pojo.TbContent;
+import com.ego.portal.dao.JedisDao;
 import com.ego.portal.service.TbContentService;
 import com.ego.service.TbContentDubboService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import redis.clients.jedis.JedisCluster;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ public class TbContentServiceImpl implements TbContentService {
     private TbContentDubboService tbContentDubboService;
 
     @Resource
-    private JedisCluster jedisCluster;
+    private JedisDao jedisDao;
 
     @Value("${redis.bigpic.key}")
     private String bigpic;
@@ -39,12 +39,12 @@ public class TbContentServiceImpl implements TbContentService {
     @Override
     public String showBigPic() {
         // jedis缓存中获取
-        String json = jedisCluster.get(bigpic);
+        String json = jedisDao.get(bigpic);
         // jedis中没有数据则调用dubbo从数据库中获取，并存入Redis中
         if (StringUtils.isEmpty(json)) {
             List<TbContent> tbContents = tbContentDubboService.selectByCategoryId(categoryId);
             json = JsonUtils.objectToJson(tbContents);
-            jedisCluster.set(bigpic, json);
+            jedisDao.set(bigpic, json);
         }
 
         /**

@@ -49,7 +49,7 @@
 	</div>
 	<div class="p-name">
 		<a target="_blank" href="/item/${item.id }.html">
-			${item.title}
+                ${item.title}<span style="font-size: 8px;color: #FFAA9D;">${item.sellPoint}</span>
 		</a>
 	</div>
 	<div class="p-price">

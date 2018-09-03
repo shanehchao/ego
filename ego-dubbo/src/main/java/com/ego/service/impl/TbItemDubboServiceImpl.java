@@ -50,8 +50,15 @@ public class TbItemDubboServiceImpl implements TbItemDubboService {
         return tbItemMapper.updateByPrimaryKeySelective(tbItem);
     }
 
+    // 新增商品
     @Override
     public int insertTbItem(TbItem tbItem) {
         return tbItemMapper.insert(tbItem);
+    }
+
+    // 查询所有商品
+    @Override
+    public List<TbItem> selectAll() {
+        return tbItemMapper.selectByExample(new TbItemExample());
     }
 }
