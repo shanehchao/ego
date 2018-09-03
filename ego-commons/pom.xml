@@ -12,6 +12,12 @@
     <artifactId>ego-commons</artifactId>
 
     <dependencies>
+        <!--ego-pojo依赖-->
+        <dependency>
+            <artifactId>ego-pojo</artifactId>
+            <groupId>com.ego</groupId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
         <!-- servlet -->
         <dependency>
             <groupId>javax.servlet</groupId>

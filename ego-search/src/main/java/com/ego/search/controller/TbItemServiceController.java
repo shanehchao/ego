@@ -5,6 +5,7 @@ import com.ego.search.service.TbItemService;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -35,12 +36,15 @@ public class TbItemServiceController {
     @RequestMapping({"/search.html", "/search"})
     public String showPage(String q, @RequestParam(defaultValue = "1") int page, Model model) {
         try {
-            q = new String(q.getBytes("ISO-8859-1"), "UTF-8");
-            Map<String, Object> map = tbItemService.selectAllSolrData(q, page);
-            model.addAttribute("itemList", map.get("itemList"));
-            model.addAttribute("totalPages", map.get("totalPages"));
-            model.addAttribute("query", q);
-            model.addAttribute("page", page);
+            // 判断搜索关键字
+            if (!StringUtils.isEmpty(q) && !q.trim().equals("*")) {
+                q = new String(q.getBytes("ISO-8859-1"), "UTF-8");
+                Map<String, Object> map = tbItemService.selectAllSolrData(q, page);
+                model.addAttribute("itemList", map.get("itemList"));
+                model.addAttribute("totalPages", map.get("totalPages"));
+                model.addAttribute("query", q);
+                model.addAttribute("page", page);
+            }
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         } catch (SolrServerException e) {
