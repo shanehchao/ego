@@ -22,4 +22,21 @@ var TT = EGOU = {
 $(function(){
 	// 查看是否已经登录，如果已经登录查询登录信息
 	TT.checkLogin();
+
+    // 退出
+    $('.link-logout').live('click', function () {
+        var href = $(this).attr('href');
+        $.ajax({
+            url: href,
+            dataType: 'jsonp',
+            jsonp: 'callback',
+            jsonpCallback: 'logout',
+            success: function (data) {
+                if (data.status == 200) {
+                    $("#loginbar").html('您好！欢迎来到易购！<a href="javascript:login()">[登录]</a>&nbsp;<a href="javascript:regist()">[免费注册]</a>');
+                }
+            }
+        });
+        return false;
+    });
 });

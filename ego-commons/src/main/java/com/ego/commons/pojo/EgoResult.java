@@ -8,6 +8,8 @@ public class EgoResult {
 
     private Object data;
 
+    private String msg;
+
     public int getStatus() {
         return status;
     }
@@ -22,5 +24,13 @@ public class EgoResult {
 
     public void setData(Object data) {
         this.data = data;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 }

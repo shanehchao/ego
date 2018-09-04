@@ -17,6 +17,8 @@
         <module>ego-portal</module>
         <module>ego-item</module>
         <module>ego-search</module>
+        <module>ego-passport</module>
+        <module>ego-cart</module>
     </modules>
 
     <properties>

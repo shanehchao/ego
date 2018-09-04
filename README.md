@@ -46,4 +46,5 @@
 * ego-portal --门户，端口：8082
 * ego-search --搜索，端口：8083
 * ego-service --dubbo服务接口
+* ego-passport --sso，端口：8084
 

@@ -12,6 +12,7 @@
     <artifactId>ego-dubbo</artifactId>
 
     <dependencies>
+        <!--ego-service依赖-->
         <dependency>
             <artifactId>ego-service</artifactId>
             <groupId>com.ego</groupId>
