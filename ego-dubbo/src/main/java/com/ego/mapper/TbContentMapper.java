@@ -2,8 +2,9 @@ package com.ego.mapper;
 
 import com.ego.pojo.TbContent;
 import com.ego.pojo.TbContentExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface TbContentMapper {
     int countByExample(TbContentExample example);

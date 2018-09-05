@@ -2,8 +2,9 @@ package com.ego.mapper;
 
 import com.ego.pojo.TbUser;
 import com.ego.pojo.TbUserExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface TbUserMapper {
     int countByExample(TbUserExample example);

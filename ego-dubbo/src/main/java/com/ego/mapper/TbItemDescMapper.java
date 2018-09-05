@@ -2,8 +2,9 @@ package com.ego.mapper;
 
 import com.ego.pojo.TbItemDesc;
 import com.ego.pojo.TbItemDescExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface TbItemDescMapper {
     int countByExample(TbItemDescExample example);

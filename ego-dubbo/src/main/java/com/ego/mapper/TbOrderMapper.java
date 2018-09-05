@@ -2,8 +2,9 @@ package com.ego.mapper;
 
 import com.ego.pojo.TbOrder;
 import com.ego.pojo.TbOrderExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface TbOrderMapper {
     int countByExample(TbOrderExample example);

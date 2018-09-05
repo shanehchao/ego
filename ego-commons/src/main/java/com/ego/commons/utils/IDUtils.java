@@ -1,7 +1,6 @@
 package com.ego.commons.utils;
 
 import java.util.Random;
-import java.util.UUID;
 
 /**
  * 各种id生成策略
