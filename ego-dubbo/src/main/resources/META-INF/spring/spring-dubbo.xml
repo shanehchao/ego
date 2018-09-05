@@ -49,10 +49,25 @@
     <!--装配内容分类具体内容服务-->
     <bean id="tbContentDubboServiceImpl" class="com.ego.service.impl.TbContentDubboServiceImpl"/>
 
-    <!--暴露内容分类具体内容服务接口-->
+    <!--暴露用户信息服务接口-->
     <dubbo:service interface="com.ego.service.TbUserDubboService" ref="tbUserDubboServiceImpl"/>
-    <!--装配内容分类具体内容服务-->
+    <!--装配用户信息服务-->
     <bean id="tbUserDubboServiceImpl" class="com.ego.service.impl.TbUserDubboServiceImpl"/>
+
+    <!--暴露订单信息服务接口-->
+    <dubbo:service interface="com.ego.service.TbOrderDubboService" ref="tbOrderDubboServiceImpl"/>
+    <!--装配订单信息服务-->
+    <bean id="tbOrderDubboServiceImpl" class="com.ego.service.impl.TbOrderDubboServiceImpl"/>
+
+    <!--暴露订单商品信息服务接口-->
+    <dubbo:service interface="com.ego.service.TbOrderItemDubboService" ref="tbOrderItemDubboServiceImpl"/>
+    <!--装配订单商品信息服务-->
+    <bean id="tbOrderItemDubboServiceImpl" class="com.ego.service.impl.TbOrderItemDubboServiceImpl"/>
+
+    <!--暴露订单发货信息服务接口-->
+    <dubbo:service interface="com.ego.service.TbOrderShippingDubboService" ref="tbOrderShippingDubboServiceImpl"/>
+    <!--装配订单发货信息服务-->
+    <bean id="tbOrderShippingDubboServiceImpl" class="com.ego.service.impl.TbOrderShippingDubboServiceImpl"/>
 
     <!-- 注解开发，与Spring整合需要修改dubbo源码（不建议）或打入自己jar中 或springboot外挂方式-->
     <!-- 扫描dubbo注解 -->

@@ -10,7 +10,6 @@ import com.ego.commons.utils.JsonUtils;
 import com.ego.pojo.TbUser;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -59,18 +58,15 @@ public class CartServiceImpl implements CartService {
         if (jedisDao.exists(cartKeyTemp)) {
             String cartJson = jedisDao.get(cartKeyTemp);
             List<Cart> cartList = JsonUtils.jsonToList(cartJson, Cart.class);
-            Iterator<Cart> it = cartList.iterator();
-            boolean flag = false;
-            while (it.hasNext()) {
-                Cart next = it.next();
-                if (next.getId() == id) {
-                    next.setNum(next.getNum()+num);
-                // Redis的购物车中不存在当前商品，则直接添加
-                } else {
-                    flag = true;
+
+            int index = -1;
+            for (int i = 0; i < cartList.size(); i++) {
+                if (cartList.get(i).getId() == id) {
+                    index = i;
                 }
             }
-            if (CollectionUtils.isEmpty(cartList) || flag) {
+
+            if (index == -1) {
                 // 从Redis中获取商品信息
                 String itemJson = jedisDao.get(itemKey + id);
                 TbItemChild child = JsonUtils.jsonToPojo(itemJson, TbItemChild.class);
@@ -83,6 +79,9 @@ public class CartServiceImpl implements CartService {
                 cart.setPrice(child.getPrice());
                 cart.setImages(child.getImages());
                 cartList.add(cart);
+            } else {
+                Cart cart = cartList.get(index);
+                cart.setNum(cart.getNum() + num);
             }
             jedisDao.set(cartKeyTemp, JsonUtils.objectToJson(cartList));
         // Redis的购物车中不存在当前商品，则直接添加
@@ -192,6 +191,7 @@ public class CartServiceImpl implements CartService {
                     if (cart.getNum() > child.getNum()) {
                         return null;
                     }
+                    break;
                 }
             }
         }

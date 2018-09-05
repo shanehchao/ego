@@ -47,4 +47,5 @@
 * ego-search --搜索，端口：8083
 * ego-service --dubbo服务接口
 * ego-passport --sso，端口：8084
-
+* ego-cart --购物车，端口：8085
+* ego-order --订单信息，端口：8086
