@@ -41,11 +41,20 @@
 * ego-commons --公共方法
 * ego-dubbo --dubbo provider
 * ego-item --商品信息，端口：8081
+    ![商品信息](images/ego-item-01.png)
 * ego-manage --后台管理，端口：8080
+    ![后台管理](images/ego-manage-01.png)
 * ego-pojo --数据库表实体类
 * ego-portal --门户，端口：8082
+    ![门户1](images/ego-portal-01.png)
+    ![门户2](images/ego-portal-02.png)
 * ego-search --搜索，端口：8083
+    ![搜索](images/ego-search-01.png)
 * ego-service --dubbo服务接口
 * ego-passport --sso，端口：8084
+    ![登录](images/ego-passport-01.png)
 * ego-cart --购物车，端口：8085
+    ![购物车1](images/ego-cart-01.png)
+    ![购物车2](images/ego-cart-02.png)
 * ego-order --订单信息，端口：8086
+    ![订单信息](images/ego-order-01.png)
